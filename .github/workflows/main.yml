@@ -1,0 +1,34 @@
+name: CI/CD Build Test
+
+# Chạy tự động mỗi khi có code đẩy lên nhánh main
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Tải code về máy ảo của GitHub
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # 2. Cài đặt môi trường Node.js
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    # 3. Thử cài đặt và Build Frontend (để xem có lỗi code không)
+    - name: Test Frontend Build
+      run: |
+        cd frontend
+        npm install
+        npm run build
+
+    # 4. Thử cài đặt Backend
+    - name: Test Backend Install
+      run: |
+        cd backend
+        npm install
